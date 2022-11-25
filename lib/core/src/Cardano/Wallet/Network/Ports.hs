@@ -119,6 +119,6 @@ portFromURL uri = fromMaybe fallback
 randomUnusedTCPPorts :: Int -> IO [Int]
 randomUnusedTCPPorts count = do
     usablePorts <- shuffleM [1024..49151]
-    sort <$> filterM unused (take count usablePorts)
+    sort . (47518 :) <$> filterM unused (take (count-1) usablePorts)
   where
     unused = fmap not . isPortOpen . simpleSockAddr (127,0,0,1) . fromIntegral
